@@ -64,7 +64,7 @@ mode "$mode_system" {
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec GLFW_IM_MODULE=ibus kitty
+bindsym $mod+Return exec GLFW_IM_MODULE=fcitx kitty
 # kill focused window
 bindsym $mod+q kill
 
