@@ -4,7 +4,6 @@
 # Should you change your keyboard layout some time, delete
 # this file and re-run i3-config-wizard(1).
 #
-
 # i3 config file (v4)
 #
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
@@ -14,7 +13,7 @@ set $alt Mod1
 exec --no-startup-id dunst
 exec --no-startup-id volumeicon
 bindsym $mod+F2 exec google-chrome-stable 
-exec --no-startup-id ibus-daemon
+exec --no-startup-id fcitx -d
 # screenshot 
 bindsym Print       exec flameshot full
 bindsym Shift+Print exec flameshot gui 
@@ -47,7 +46,7 @@ bindsym $mod+Shift+F5 exec "light -U $(light -G); notify-send 'brightness down 5
 bindsym $mod+0 mode "$mode_system"
 set $mode_system (l)ock, (e)xit, switch_(u)ser, (s)uspend, (h)ibernate, (r)eboot, (Shift+s)hutdown
 mode "$mode_system" {
-    bindsym l exec --no-startup-id i3exit lock, mode "default"
+    bindsym l exec /home/$USER/.config/scripts/lock, mode "default"
     bindsym s exec --no-startup-id i3exit suspend, mode "default"
     bindsym u exec --no-startup-id i3exit switch_user, mode "default"
     bindsym e exec --no-startup-id i3exit logout, mode "default"
@@ -209,3 +208,12 @@ bar {
         #position top
 
 }
+
+## i3-gaps
+gaps inner 3
+gaps outer 3
+
+# set background image
+exec --no-startup-id feh --bg-scale ./images/back
+bindsym $mod+x exec /home/$USER/.config/scripts/loc
+exec --no-startup-id picom --config ~/.config/picom/picom.conf &
