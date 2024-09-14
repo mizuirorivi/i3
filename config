@@ -57,8 +57,8 @@ bindsym $mod+space focus mode_toggle
 # focus the parent container
 bindsym $mod+a focus parent
 # WORKSPACE CONFIG
-bindsym $mod+w exec --no-startup-id $HOME/.config/i3/i3-workspace-switcher.sh
-bindsym $mod+Shift+w exec --no-startup-id $HOME/.config/i3/i3-workspace-shifter.sh
+bindsym $mod+w exec --no-startup-id $HOME/.config/i3/mod/i3-workspace-switcher.sh
+bindsym $mod+Shift+w exec --no-startup-id $HOME/.config/i3/mod/i3-workspace-shifter.sh
 set $ws1 "1"
 set $ws2 "2"
 set $ws3 "3"
@@ -117,9 +117,11 @@ bindsym $mod+Return exec GLFW_IM_MODULE=fcitx kitty
 bindsym $mod+q kill
 ## start program launcher
 bindsym $mod+d exec --no-startup-id "rofi -modi run -show run"
+bindsym $mod+Shift+d exec --no-startup-id "~/.config/i3/mod/rofi_run_scripts.sh"
 ## scratchpad
 bindsym $mod+Shift+minus move scratchpad
 bindsym $mod+minus scratchpad show
+bindsym $mod+plus exec /home/r3v321se/.pyenv/shims/python $HOME/.config/i3/mod/get_scratchpad_windows.py 
 ## resize
 bindsym $mod+r mode "resize"
 
