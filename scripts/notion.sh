@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if i3-msg -t get_tree | grep -q "anki"; then
+if i3-msg -t get_tree | grep -q "notion"; then
     i3-msg "[class=Anki] focus"
     exit
 fi

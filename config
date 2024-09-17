@@ -2,13 +2,18 @@
 
 set $mod Mod4
 set $alt Mod1
-set $ws10 "10: VirtualBox"
+set $ws10 "virtualBox"
+set $ws11 "notion"
 ## reload i3
 bindsym $mod+Shift+c reload
 ## restart i3 
 bindsym $mod+Shift+r restart
 ## exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+## StartUp
+exec --nostartup-id notion-snap-reborn
+## Assign workspaces
+assign [class="notion-snap-reborn"] $ws11
 
 #BASIC CONFIG
 new_window pixel 1
@@ -116,8 +121,10 @@ bindsym $mod+Return exec GLFW_IM_MODULE=fcitx kitty
 ## kill focused window
 bindsym $mod+q kill
 ## start program launcher
-bindsym $mod+d exec --no-startup-id "rofi -modi run -show run"
 bindsym $mod+Shift+d exec --no-startup-id "~/.config/i3/mod/rofi_run_scripts.sh"
+bindsym $mod+Tab exec --no-startup-id rofi -show window
+bindsym $mod+d exec --no-startup-id rofi -show combi
+
 ## scratchpad
 bindsym $mod+Shift+minus move scratchpad
 bindsym $mod+minus scratchpad show
@@ -211,7 +218,6 @@ bar {
         position bottom
 
 }
-
 
 # Open specific applications in floating mode
 for_window [class="Pavucontrol"] floating enable
