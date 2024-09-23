@@ -5,4 +5,6 @@ if [ "$n" -eq "2" ]; then
 else
     $HOME/.screenlayout/one_monitor.sh
 fi
+killall -q polybar
 $HOME/.config/polybar/colorblocks/launch.sh
+

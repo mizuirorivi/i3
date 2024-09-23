@@ -58,10 +58,10 @@ bindsym $mod+t layout tabbed
 bindsym $mod+p layout toggle split
 
 # toggle tiling / floating
-bindsym $mod+Shift+space floating toggle
+bindsym $mod+Shift+Tab floating toggle
 
 # change focus between tiling / floating windows
-bindsym $mod+space focus mode_toggle
+bindsym $mod+Tab focus mode_toggle
 
 # focus the parent container
 bindsym $mod+a focus parent
@@ -127,8 +127,9 @@ bindsym $mod+Return exec GLFW_IM_MODULE=fcitx $HOME/.local/kitty.app/bin//kitty
 bindsym $mod+q kill
 ## start program launcher
 bindsym $mod+Shift+d exec --no-startup-id "~/.config/i3/mod/rofi_run_scripts.sh"
-bindsym $mod+Tab exec --no-startup-id rofi -show window
-bindsym $mod+d exec --no-startup-id rofi -show combi
+bindsym $mod+space exec --no-startup-id rofi -show window
+bindsym $mod+d exec --no-startup-id "rofi -no-config -no-lazy-grab -show drun -modi drun -theme ~/.config/polybar/colorblocks/scripts/rofi/launcher.rasi"
+# bindsym $mod+d exec --no-startup-id rofi -show combi
 
 ## scratchpad
 bindsym $mod+Shift+minus move scratchpad
@@ -213,10 +214,11 @@ mode "resize" {
         bindsym $mod+r mode "default"
 }
 
-## set background image
+exec --no-startup-id exec "$path_mod/auto-setting-monitor.sh"
+exec --no-startup-id exec "$path_mod/background.sh $path_image/tibimiku.png $path_image/ranma.png"
 
-exec_always --no-startup-id exec "$path_mod/background.sh $path_image/tibimiku.jpg $path_image/ranma.png"
-exec_always --no-startup-id exec "$path_mod/auto-setting-monitor.sh"
+exec --no-startup-id exec "/usr/local/bin/xplugd -r $path_mod/xplugd.sh"
+
 # Open specific applications in floating mode
 for_window [class="Pavucontrol"] floating enable
 for_window [class="VirtualBox Machine"] move container to workspace $ws10
