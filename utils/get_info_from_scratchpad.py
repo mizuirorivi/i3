@@ -3,6 +3,7 @@ import json
 
 i3 = Connection()
 tree = i3.get_tree()
+print(tree)
 scratchpad = tree.scratchpad()
 windows = []
 for window in scratchpad.leaves():

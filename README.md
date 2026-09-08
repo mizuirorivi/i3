@@ -42,7 +42,6 @@ utils is used for mod and scripts
 ## Dependencies
 - rofi
 - i3wm
-- i3blocks
+- polybar
 - python
 - jq
-

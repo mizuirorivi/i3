@@ -1,5 +1,4 @@
 #  Please see https://i3wm.org/docs/userguide.html for a complete reference!
-
 set $mod Mod4
 set $alt Mod1
 set $ws10 "virtualBox"
@@ -68,6 +67,8 @@ bindsym $mod+a focus parent
 # WORKSPACE CONFIG
 bindsym $mod+w exec --no-startup-id $path_mod/i3-workspace-switcher.sh
 bindsym $mod+Shift+w exec --no-startup-id $path_mod/i3-workspace-shifter.sh
+bindsym $mod+Shift+m exec --no-startup-id $path_mod/i3-workspace-mover.sh
+bindsym $mod+Shift+i exec --no-startup-id $HOME/.local/bin/hints
 set $ws1 "1"
 set $ws2 "2"
 set $ws3 "3"
@@ -101,28 +102,33 @@ bindsym $mod+Shift+9 move container to workspace number $ws9
 bindsym $mod+Control+l workspace next
 bindsym $mod+Control+h workspace prev
 # AUTO RUN APPS
-# 1 hour to lock
-exec --no-startup-id xset s 3600 
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+exec --no-startup-id xset s off
+exec --no-startup-id xset -dpms
+exec --no-startup-id xset s noblank
 exec --no-startup-id dunst
 exec --no-startup-id volumeicon
 exec --no-startup-id fcitx5 -d 
+exec --no-startup-id hintsd
+
 
 ## network manager applet
 exec --no-startup-id nm-applet
 exec --no-startup-id picom --config ~/.config/picom/picom.conf &
 
+exec --no-startup-id xsetroot -cursor_name left_ptr
+exec --no-startup-id gnome-settings-daemon
 # BIND KEY
-bindsym $mod+F2 exec google-chrome-stable 
+bindsym $mod+F2 exec /usr/bin/google-chrome
 bindsym Print       exec flameshot full
-bindsym Shift+Print exec flameshot gui 
+bindsym Shift+Print exec flameshot gui -c
+bindsym $mod+Print exec simplescreenrecorder
 bindsym $alt+Print exec gyazo 
 bindsym $mod+x exec /home/$USER/.config/scripts/loc
 bindsym $mod+n border normal
 ## temporarily disable menu bar
 bindsym $mod+u border none
 ## start a terminal
-bindsym $mod+Return exec GLFW_IM_MODULE=fcitx $HOME/.local/kitty.app/bin//kitty
+bindsym $mod+Return exec /usr/bin/alacritty
 ## kill focused window
 bindsym $mod+q kill
 ## start program launcher
@@ -133,28 +139,34 @@ bindsym $mod+d exec --no-startup-id "rofi -no-config -no-lazy-grab -show drun -m
 
 ## scratchpad
 bindsym $mod+Shift+minus move scratchpad
+bindsym $mod+Shift+v exec --no-startup-id "$path_mod/i3-scratchpad/i3-scratchpad  -tmt -atc urxvt +transparent"
 bindsym $mod+minus scratchpad show
 bindsym $mod+plus exec /home/r3v321se/.pyenv/shims/python $HOME/.config/i3/mod/get_scratchpad_windows.py 
+
+## pomodoro timer
+bindsym $mod+Shift+p exec --no-startup-id $path_i3/utils/pomodoro_timer.sh start
+bindsym $mod+Control+p exec --no-startup-id $path_i3/utils/pomodoro_timer.sh stop
+bindsym $mod+Shift+o exec --no-startup-id $path_i3/utils/pomodoro_timer.sh sound toggle
+
 ## resize
 bindsym $mod+r mode "resize"
 
 # i3-gaps
-gaps inner 10
-gaps outer 5
+gaps inner 1
+gaps outer 1
 
 smart_gaps on
 
 
-# Use pactl to adjust volume in PulseAudio.
-set $refresh_i3status killall -SIGUSR1 i3status
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
-bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+# Use pactl to adjust volume in PulseAudio/PipeWire.
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10%
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10%
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle
+bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle
 
 #backlight config
-bindsym XF86MonBrightnessUp exec $path_mod/light_up.sh
-bindsym XF86MonBrightnessDown exec "$path_mod/light_down.sh; notify-send 'brightness down 1%'"
+bindsym XF86MonBrightnessUp exec --no-startup-id $path_mod/light.sh up
+bindsym XF86MonBrightnessDown exec --no-startup-id $path_mod/light.sh down
 bindsym $mod+Shift+F5 exec "light -U $(light -G); notify-send 'brightness down 5%'"
 
 bindsym $mod+Shift+0 mode "$light_system"
@@ -172,7 +184,7 @@ mode "$light_system" {
 bindsym $mod+0 mode "$mode_system"
 set $mode_system (l)ock, (e)xit, switch_(u)ser, (s)uspend, (h)ibernate, (r)eboot, (Shift+s)hutdown
 mode "$mode_system" {
-    bindsym l exec "i3lock -i /home/r3v321se/.config/i3/images/rick_and_morty.png"
+    bindsym l exec "i3lock -i /home/r3v321se/.config/i3/images/rick_and_morty.png", mode "default"
 
     bindsym s exec --no-startup-id systemctl suspend, mode "default"
     bindsym u exec --no-startup-id i3exit switch_user, mode "default"
@@ -214,13 +226,15 @@ mode "resize" {
         bindsym $mod+r mode "default"
 }
 
-exec --no-startup-id exec "$path_mod/auto-setting-monitor.sh"
-exec --no-startup-id exec "$path_mod/background.sh $path_image/tibimiku.png $path_image/ranma.png"
+# exec --no-startup-id exec "$path_mod/auto-setting-monitor.sh"
+# exec --no-startup-id exec "$path_mod/background.sh $path_image/tibimiku.png $path_image/ranma.png"
 
-exec --no-startup-id exec "/usr/local/bin/xplugd -r $path_mod/xplugd.sh"
+# exec --no-startup-id exec "/usr/local/bin/xplugd -r $path_mod/xplugd.sh"
 
 # Open specific applications in floating mode
 for_window [class="Pavucontrol"] floating enable
 for_window [class="VirtualBox Machine"] move container to workspace $ws10
 for_window [class="Anki" title="^(?!.*Anki).*$"] floating enable,border normal,move position center, resize set 800 600
+for_window [class="discord"] floating enable,border normal,move position center, resize set 800 600
+for_window [class="Yad"] floating enable,border normal,move position center
 # for_window [class="(?i)virtualbox"] floating enable border normal

@@ -1,0 +1,9 @@
+[submodule "mod/rofi-bluetooth"]
+	path = mod/rofi-bluetooth
+	url = https://github.com/nickclyde/rofi-bluetooth
+[submodule "scripts/rofi-bluetooth"]
+	path = scripts/rofi-bluetooth
+	url = https://github.com/nickclyde/rofi-bluetooth
+[submodule "mod/i3-scratchpad"]
+	path = mod/i3-scratchpad
+	url = https://gitlab.com/aquator/i3-scratchpad.git
